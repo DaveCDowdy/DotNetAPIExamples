@@ -41,6 +41,12 @@ namespace MagicVilla_VIllaAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<VillaDTO> CreateVilla([FromBody]VillaDTO villaDTO)
         {
+            if(VillaStore.villaList.FirstOrDefault(villa=>villa.Name.ToLower() == villaDTO.Name.ToLower()) != null)
+            {
+                ModelState.AddModelError("CustomError", "Villa Already Exists!");
+                return BadRequest(ModelState);
+            }
+
             if (villaDTO == null) 
             {
                 return BadRequest(villaDTO);
